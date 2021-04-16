@@ -114,6 +114,7 @@ etc
 def parse_file(file):
     data = {}
     with open(file, encoding='utf-8') as map_data:
+        data["FileName"] = re.split(r"\/", file)[-1]
         section = ""
         cpt = 0
         elements = []
@@ -134,19 +135,20 @@ def parse_file(file):
                 if len(content) > 1:
                     content[len(content) - 1] = content[-1][:len(content[-1]) - 1]
                     p = {
-                        "Offset": content[2],
-                        "x": content[0],
-                        "y": content[1]
+                        "Offset": round(float(content[2])),
+                        "x": int(content[0]),
+                        "y": int(content[1])
                     }
                     if len(content) == 6:
                         """Circle"""
                     elif len(content) == 7:
                         """Spinner"""
-                        p["OffsetFin"] = content[5]
+                        p["OffsetFin"] = round(float(content[5]))
                     else:
                         """Slider"""
-                        p['DureeSlider'] = content[7]
-                        p['ListePointsBezier'] = content[5]
+                        p['DureeSlider'] = round(float(content[7]))
+                        tmp = content[5].split('|')[1:]
+                        p['ListePointsBezier'] = tmp
                     elements.append(p)
 
             content = re.search(r'\[[A-Za-z]*\]', line)
@@ -154,11 +156,3 @@ def parse_file(file):
                 section = content.string
         data['elements'] = elements
     return data
-
-
-path = "../maps/"
-fichier = path + "test" + ".osu"
-
-result = parse_file(fichier)
-for key in result:
-    print(key, ":", result[key])
