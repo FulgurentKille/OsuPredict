@@ -116,7 +116,7 @@ def parse_file(file):
     with open(file, encoding='utf-8') as map_data:
         section = ""
         cpt = 0
-        points = []
+        elements = []
 
         cpt += 1
         if section == "" and "osu file format v14" not in map_data.readline():
@@ -147,12 +147,12 @@ def parse_file(file):
                         """Slider"""
                         p['DureeSlider'] = content[7]
                         p['ListePointsBezier'] = content[5]
-                    points.append(p)
+                    elements.append(p)
 
             content = re.search(r'\[[A-Za-z]*\]', line)
             if type(content) == type(re.search("a", "a")):
                 section = content.string
-        data['points'] = points
+        data['elements'] = elements
     return data
 
 
