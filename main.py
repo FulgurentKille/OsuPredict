@@ -1,6 +1,6 @@
 import os
 
-from src.converters import convert_slider, convert_element
+from src.converters import convert_element
 from src.fileParser import parse_file
 
 """
